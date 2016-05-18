@@ -204,7 +204,7 @@ auto BinarySearchTree<T>::getRoot() -> T {
 }
 
 template<typename T>
-bool BinarySearchTree<T>::begin() {
+auto BinarySearchTree<T>::begin() {
 	return elements.begin();
 }
 
