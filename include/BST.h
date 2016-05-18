@@ -1,5 +1,5 @@
-#ifndef binarysearchtree_h
-#define binarysearchtree_h
+#ifndef BST_h
+#define BST_h
 #pragma once
 #include <iostream>
 #include <fstream>
