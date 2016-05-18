@@ -1,4 +1,4 @@
-#include "BinarySearchTree.h"
+#include "BST.h"
 
 using std::unique_ptr;
 using std::ostream;
