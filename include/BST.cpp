@@ -1,161 +1,305 @@
-#include "BST.h"
-#include <iostream>
-#include <fstream>
-using namespace std;
-Exceptions::Exceptions(char* _err) : err(_err){}
-char* Exceptions::what() { return err; }
-Busy::Busy() : Exceptions("ERROR: Already added") {}
-File_Not_Open::File_Not_Open() : Exceptions("ERROR: file not open!") {}
-Empty_tree::Empty_tree() : Exceptions("ERROR: Tree is empty!") {}
-Element_not_found::Element_not_found() : Exceptions("ERROR: Empty") {}
-Tree_Was_Deleted::Tree_Was_Deleted() : Exceptions("ERROR: Tree was deleted!") {}
+#include "BinarySearchTree.h"
 
+using std::unique_ptr;
+using std::ostream;
+using std::istream;
+using std::fstream;
+using std::move;
+using std::endl;
 
-template <class T>
-BST<T>::Node::Node(T x) : k(x), l(nullptr), r(nullptr) {}
-template <class T>
-void BST<T>::Node::add(T x) 
-{
-	if (x < k) 
-	{
-		if (l != nullptr) l->add(x);
-		if (l == nullptr) l = new Node(x);
-	}
-	if (x>k) 
-	{
-		if (r != nullptr) r->add(x);
-		if (r == nullptr) r = new Node(x);
+#ifndef BT_CPP
+#define BT_CPP
+
+template<typename T>
+BinarySearchTree<T>::BinarySearchTree(const std::initializer_list<T>& list) {
+	root = nullptr;
+	for (auto i : list) {
+		this->insert(i);
 	}
 }
-template <class T>
-bool BST<T>::Node::search(T x) 
-{
-	if (x == k) { return true; }
-	if (x > k) if (r != nullptr) return(r->search(x));
-	if (x < k) if (l != nullptr) return(l->search(x));
-	return false;
-}
-template <class T>
-bool BST<T>::Node::print_file(ofstream &fout) 
-{
-	if (this != nullptr) {
-		if (fout.is_open()) 
-		{
-			if (l != nullptr) l->print_file(fout);
-			fout << k << " ";
-			if (r != nullptr) r->print_file(fout);
+
+template <typename T>	// WORKS
+auto BinarySearchTree<T>::insert(const T &ref) -> bool {
+	this->existed += 1;
+	unique_ptr<node<T>> m_node(new node<T>(ref));
+
+	if (root == nullptr) {
+		root = move(m_node);
+		elements.push_back(ref);
+		return true;
+	}
+	else {
+		node<T>* temp = root.get();
+		node<T>* prev = root.get();
+
+		while (temp != nullptr) {
+			prev = temp;
+			if (temp->data < ref) {
+				temp = temp->right.get();
+			}
+			else if (temp->data == ref) {
+				throw std::logic_error("Already exist");
+			}
+			else {
+				temp = temp->left.get();
+			}
 		}
+
+		if (prev->data < ref) {
+			prev->right = move(m_node);
+		}
+		else {
+			prev->left = move(m_node);
+		}
+		elements.push_back(ref);
+
 		return true;
 	}
 	return false;
 }
-template <class T>
-bool BST<T>::Node::print_console() 
-{
-	if (this != nullptr) 
-	{
-		if (l != nullptr) l->print_console();
-		cout << k << " ";
-		if (r != nullptr) r->print_console();
-		return true;
+
+template <typename T>	// WORKS
+auto BinarySearchTree<T>::remove(const T &key) -> node<T> * {
+	if (search(key) == nullptr) {
+		throw std::invalid_argument("Wrong index");
 	}
-	else return false;
+	node<T> * leaf = root.get();
+	return remove(key, leaf);
 }
 
-template <class T>
-T BST<T>::Node::min(Node* M)
-{
-	if (M->l) return min(M->l);
-	else return M->k;
-}
-template <class T>
-void BST<T>::Node::del(T x)
-{
-	if ((x == k) && (!l) && (!r)) { delete this; throw Tree_Was_Deleted(); }
-	if ((x == k) && (!l)) 
-	{
-		k = r->k;
-		if (r->l) l = r->l; else l = nullptr;
-		if (r->r) r = r->r; else r = nullptr;
-		return;
+// DIFFICULT
+template<typename T>	// HARD, BUT WORKS
+auto BinarySearchTree<T>::remove(const T &key, node<T> * leaf) -> node<T> * {
+	if (leaf == nullptr) {
+		//elements.pop_back(key);
+		return leaf;
 	}
-	if ((x == k) && (!r)) 
-	{
-		k = l->k;
-		if (l->r) r = l->r; else r = nullptr;
-		if (l->l) l = l->l; else l = nullptr;
-		return;
+	if ((leaf->left.get() != nullptr) && ((leaf->left.get())->data == key)) {
+		if (((leaf->left.get())->left.get() == nullptr) && ((leaf->left.get())->right.get() == nullptr)) {
+			leaf->left.reset();
+			this->existed -= 1;
+			return leaf;
+		}
 	}
-	if (x < k) 
-	{
-		if ((l->k == x) && (!(l->r)) && (!(l->l))) { l = nullptr; return; }
-		if ((l->k == x) && (l->l) && (l->r)) { l->k = min(l->r); if (l->r->k != min(l->r)) l->r->del(min(l->r)); else l->r = nullptr; return; }
-		else; l->del(x);
-		return;
+	else if ((leaf->right.get() != nullptr) && ((leaf->right.get())->data == key)) {
+		if (((leaf->right.get())->left.get() == nullptr) && ((leaf->right.get())->right.get() == nullptr)) {
+			leaf->right.reset();
+			this->existed -= 1;
+			return leaf;
+		}
 	}
-	if (x > k) 
-	{ 
-		if ((r->k == x) && (!(r->r)) && (!(r->l))) { r = nullptr; return; }
-		if ((r->k == x) && (r->l) && (r->r)) { r->k = min(r->r); if (r->r->k != min(r->r)) r->r->del(min(r->r)); else r->r = nullptr; return; }
-		else r->del(x);
-		return;
+	if (key < leaf->data) {
+		leaf = remove(key, leaf->left.get());
 	}
-	if ((x == k) && (l) && (r)) { k = min(r); if (r->k != min(r)) r->del(min(r)); else r = nullptr; return; }
+	else if (key > leaf->data) {
+		leaf = remove(key, leaf->right.get());
+	}
+	else {
+		if ((leaf->left.get() != nullptr) && (leaf->right.get() == nullptr)) {
+			leaf->data = (leaf->left.get())->data;
+			leaf->right = move((leaf->left.get())->right);
+			leaf->left = move((leaf->left.get())->left);
+			this->existed -= 1;
+			return leaf;
+		}
+		else if ((leaf->right.get() != nullptr) && ((leaf->right.get())->left.get() == nullptr)) {
+			leaf->data = (leaf->right.get())->data;
+			leaf->right = move((leaf->right.get())->right);
+			//leaf->left = move((leaf->right.get())->left);
+			this->existed -= 1;
+			return leaf;
+		}
+		else if ((leaf->left.get() != nullptr) && (leaf->right.get() != nullptr)) {
+			leaf->data = findMin(leaf->right)->data;
+			this->existed -= 1;
+			return leaf;
+		}
+		else if ((leaf->left.get() == nullptr) && (leaf->right.get() != nullptr)) {
+			leaf->data = findMin(leaf->left)->data;
+			this->existed -= 1;
+			return leaf;
+		}
+	}
+	return leaf;
 }
 
-template <class T>
-void BST<T>::Create_tree_again() {
-	parent = nullptr;
-}
-
-template <class T>
-BST<T>::BST() : parent(nullptr) {}
-template <class T>
-bool BST<T>::add(T x) 
-{
-	if (parent != nullptr) if (search(x)) throw Busy();
-	if (parent == nullptr) { parent = new Node(x); return true; }
-	else { parent->add(x); return true; }
-	return false;
-}
-template <class T>
-bool BST<T>::search(T x) 
-{
-	if (parent == nullptr) throw Empty_tree();
-	return(parent->search(x));
-}
-
-template <class T>
-bool BST<T>::del(T x)
-{
-	if (parent == nullptr) throw Empty_tree();
-	if (!this->search(x)) throw Element_not_found();
-	try{ parent->del(x); }
-	catch (Tree_Was_Deleted &){ throw Tree_Was_Deleted(); }
-	return true;
-}
-template <class T>
-ifstream & operator >>(ifstream & fin, BST<T> & tree) 
-{
-	if (!fin.is_open()) throw File_Not_Open();
-	T x;
-	while (!fin.eof()) 
-	{
-		fin >> x;
-		if (x != -1)tree.add(x);
-		else break;
+template<typename T>	// Works?.. Hmm...
+auto BinarySearchTree<T>::findMin(unique_ptr<node<T>>& leaf) -> node<T> * {
+	if ((leaf->left.get() == nullptr) && (leaf->right.get() != nullptr)) {
+		return findMin(leaf->right);
 	}
-	return fin;
+	else if (leaf->left.get() == nullptr) {
+		node<T> *tmp = new node<T>(leaf.get()->data);
+		if (((leaf.get())->right).get() == nullptr) {
+			leaf.reset();
+		}
+		else {
+			leaf = move((leaf.get()->right));
+		}
+		return tmp;
+	}
+	return findMin(leaf->left);
 }
-template <class T>
-ostream & operator <<(ostream & out, BST<T> & tree) 
-{
-	if (tree.parent->print_console()) return out;
-	else throw Empty_tree();
+
+template <typename T>	// WORKS
+auto BinarySearchTree<T>::search(const T &key) -> node<T> * {
+	node<T>* leaf = root.get();
+	return search(key, leaf);
 }
-template <class T>
-ofstream & operator <<(ofstream & fout, BST<T> & tree) 
-{
-	if (tree.parent->print_file(fout)) return fout;
-	else throw Empty_tree();
+
+template <typename T>	// WORKS
+auto BinarySearchTree<T>::search(const T & key, node<T>* leaf) -> node<T> * {
+	if (leaf != nullptr) {
+		if (key == leaf->data) {
+			return leaf;
+		}
+		if (key < leaf->data) {
+			return search(key, leaf->left.get());
+		}
+		else {
+			return search(key, leaf->right.get());
+		}
+	}
+	else {
+		throw std::invalid_argument("Wrong index");
+	}
 }
+
+template<typename T>
+auto BinarySearchTree<T>::createVector(const unique_ptr<node<T>> &m_node, vector<T> &elem) -> vector<T> {
+	node<T>* tmp = m_node.get();
+
+	if (m_node.get() == nullptr) {
+		return elem;
+	}
+	if (tmp->left.get() != nullptr) {
+		createVector(tmp->left, elem);
+	}
+	elem.push_back(m_node->data);
+	if (tmp->right.get()) {
+		createVector(tmp->right, elem);
+	}
+	return elem;
+}
+
+template <typename T>	// WORKS
+auto BinarySearchTree<T>::getCount() const -> size_t {
+	return this->count;
+}
+
+template<typename T>	// WORKS
+auto BinarySearchTree<T>::getNumber() const -> size_t {
+	return this->existed;
+}
+
+template<typename T>
+auto BinarySearchTree<T>::createVector() -> vector<T> {
+	vector<T> elem;
+	return createVector(this->root, elem);
+}
+
+template<typename T>
+auto BinarySearchTree<T>::getRoot() -> T {
+	return (root.get())->data;
+}
+
+template<typename T>
+auto BinarySearchTree<T>::begin() {
+	return elements.begin();
+}
+
+template<typename T>
+auto BinarySearchTree<T>::end() {
+	elements.clear();
+	elements = this->createVector();
+	return elements.end();
+}
+
+template <typename T>	// WORKS
+auto BinarySearchTree<T>::print(const unique_ptr<node<T>> &m_node, ostream & os, size_t width) -> void {
+	node<T>* tmp = m_node.get();
+
+	if (m_node.get() == nullptr) {
+		return;
+	}
+	if (tmp->left.get() != nullptr) {
+		print(tmp->left, os, width + 3);
+	}
+	if (width) {
+		os.width(width);
+		os << ' ';
+	}
+	os << m_node->data << endl;
+	if (tmp->right.get()) {
+		print(tmp->right, os, width + 3);
+	}
+}
+
+template <typename T>	// WORKS
+ostream & operator << (ostream & os, BinarySearchTree<T> & x) {
+	if (x.root == nullptr) {
+		throw std::logic_error("Empty tree");
+	}
+	x.print(x.root, os);
+
+	return os;
+}
+
+template <typename T>	//WORKS
+fstream & operator << (fstream & file, BinarySearchTree<T> & x) {
+	if (x.count == 0) {
+		throw std::logic_error("Empty tree");
+	}
+	x.print(x.root, file);
+
+	return file;
+}
+
+template <typename T>	// WORKS
+istream & operator >> (istream & input, BinarySearchTree<T> & x) {
+	T temp;
+	if (x.count == 0) {
+		throw std::logic_error("Empty tree");
+	}
+	else {
+		for (size_t i = 0; i < x.count; ++i) {
+			if (input >> temp) {
+				x.insert(temp);
+			}
+			else {
+				throw std::logic_error("Error in input stream");
+			}
+		}
+		return input;
+	}
+}
+
+template <typename T>	// WORKS
+fstream & operator >> (fstream & file, BinarySearchTree<T> & x) {
+	T temp;
+	//if (x.count == 0) {
+	//	throw std::logic_error("Empty tree");
+	//}
+	//else {
+	//	for (size_t i = 0; i < x.count; ++i) {
+	//		if (file >> temp) {
+	//			x.insert(temp);
+	//		}
+	//		else {
+	//			throw std::logic_error("Error in input stream");
+	//		}
+	//	}
+	//	return file;
+	//}
+	if (file.is_open()) {
+		while (!file.eof()) {
+			if (file >> temp) {
+				x.insert(temp);
+			}
+			else {
+				throw std::logic_error("Error in input stream");
+			}
+		}
+	}
+}
+#endif
