@@ -202,7 +202,7 @@ template<typename T>
 auto BinarySearchTree<T>::getRoot() -> T {
 	return (root.get())->data;
 }
-
+/*
 template<typename T>
 auto BinarySearchTree<T>::begin() {
 	return elements.begin();
@@ -214,7 +214,7 @@ auto BinarySearchTree<T>::end() {
 	elements = this->createVector();
 	return elements.end();
 }
-
+*/
 template <typename T>	// WORKS
 auto BinarySearchTree<T>::print(const unique_ptr<node<T>> &m_node, ostream & os, size_t width) -> void {
 	node<T>* tmp = m_node.get();
