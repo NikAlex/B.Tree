@@ -69,8 +69,8 @@ public:
 	auto		getNumber() const->size_t;
 	auto		createVector()->vector<T>;
 	auto		getRoot()->T;
-	auto		begin();
-	auto		end();
+//	auto		begin();
+//	auto		end();
 
 	friend		istream & operator >> <>(istream &, BinarySearchTree &);		// TESTED
 	friend		fstream & operator >> <>(fstream &, BinarySearchTree &);		// TESTED
