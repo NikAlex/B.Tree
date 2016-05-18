@@ -4,6 +4,7 @@
 #include <iostream>
 using namespace std;
 
+/*
 SCENARIO("Add_int", "[add]") {
 	BST<int> tree;
 	REQUIRE(tree.add(1));
@@ -13,7 +14,7 @@ SCENARIO("Add_int", "[add]") {
 	REQUIRE(tree.search(3));
 	REQUIRE(tree.search(1));
 }
-
+*/
 SCENARIO("Add_char", "[add_c]") {
 	BST<char> tree;
 	REQUIRE(tree.add(6));
