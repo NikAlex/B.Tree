@@ -78,6 +78,6 @@ public:
 	friend		fstream & operator<< <>(fstream &, BinarySearchTree &);		// TESTED
 };
 
-#include "BinarySearchTree.cpp"
+#include "BST.cpp"
 
 #endif
