@@ -1,4 +1,4 @@
-#include "BST.h"
+#include "binarysearchtree.h"
 #include <iostream>
 #include <fstream>
 using namespace std;
@@ -13,21 +13,19 @@ Tree_Was_Deleted::Tree_Was_Deleted() : Iscluchenia("ERROR: derevo udaleno!") {}
 template <class Z>
 BinarySearchTree<Z>::der::der(Z x) : D(x), l(nullptr), r(nullptr){}
 template <class Z>
-void BinarySearchTree<Z>::der::TFREE(){
-	
-	if (l)
+void BinarySearchTree<Z>::der::do_free(der* root){
+	if (root->l)
 	{
-		l->TFREE();
+		do_free(root->l);
 	}
-	if (r)
+	if (root->r != 0)
 	{
-		r->TFREE();	
+		do_free(root->r);
 	}
-	delete this;
-//	root = nullptr;
-
-	
+	delete root;
+	root = nullptr;
 }
+
 template <class Z>
 void BinarySearchTree<Z>::der::add(Z x){
 	if (x < D){
@@ -53,32 +51,34 @@ Z BinarySearchTree<Z>::der::min(der* G){
 }
 template <class Z>
 void BinarySearchTree<Z>::der::del(Z x){
-	if ((x == D) && (!l) && (!r)) { delete this; throw Tree_Was_Deleted(); }
-	if ((x == D) && (!l)) {
+if ((x == D) && (!l)) {
 		D = r->D;
-		if (r->l) l = r->l; else { delete l; l = nullptr; }
-		if (r->r) r = r->r; else { delete r; r = nullptr; }
+		if (r->l) l = r->l; else { delete[] l; l = nullptr; --size_; }
+		if (r->r) r = r->r; else { delete[] r; r = nullptr; --size_; }
 		return;
 	}
 	if ((x == D) && (!r)) {
 		D = l->D;
-		if (l->r) r = l->r; else { delete r; r = nullptr; }
-		if (l->l) l = l->l; else { delete l; l = nullptr; }
+		if (l->r) r = l->r; else { delete[] r; r = nullptr; --size_; }
+		if (l->l) l = l->l; else { delete[] l; l = nullptr; --size_; }
 		return;
 	}
 	if (x < D) {
-		if ((l->D == x) && (!(l->r)) && (!(l->l))) { delete l; l = nullptr; return; }
-		if ((l->D == x) && (l->l) && (l->r)) { l->D = min(l->r); if (l->r->D != min(l->r)) l->r->del(min(l->r)); else { delete l->r; l->r = nullptr; } return; }
+		if ((l->D == x) && (!(l->r)) && (!(l->l))) { delete[] l; l = nullptr; return; --size_; }
+		if ((l->D == x) && (l->l) && (l->r)) { l->D = find_min(l->r); if (l->r->D != find_min(l->r)) l->r->del(find_min(l->r)); else { delete[] l->r; l->r = nullptr; --size_; } return; }
 		else; l->del(x);
+
 		return;
 	}
 	if (x > D) {
-		if ((r->D == x) && (!(r->r)) && (!(r->l))) { delete r; r = nullptr; return; }
-		if ((r->D == x) && (r->l) && (r->r)) { r->D = min(r->r); if (r->r->D != min(r->r)) r->r->del(min(r->r)); else { delete r->r; r->r = nullptr; } return;}
+		if ((r->D == x) && (!(r->r)) && (!(r->l))) { delete[] r; r = nullptr; return; --size_; }
+		if ((r->D == x) && (r->l) && (r->r)) { r->D = find_min(r->r); if (r->r->D != find_min(r->r)) r->r->del(find_min(r->r)); else { delete[] r->r; r->r = nullptr; --size_; } return; }
 		else r->del(x);
 		return;
 	}
-	if ((x == D) && (l) && (r)) { D = min(r); if (r->D != min(r)) r->del(min(r)); else { delete r; r = nullptr; } return; }
+	if ((x == D) && (l) && (r)) { D = find_min(r); if (r->D != find_min(r)) r->del(find_min(r)); else { delete[]r; r = nullptr; --size_; } return; }
+	
+
 }
 
 
@@ -122,30 +122,8 @@ BinarySearchTree<Z>::BinarySearchTree(initializer_list<Z> L){
 }
 template <class Z>
 BinarySearchTree<Z>::~BinarySearchTree() {
-	if(root) {root->TFREE(); delete root;}
+	if(root) root->do_free(root);
 }
-
-template <class Z> 
-BinarySearchTree<Z>::~BinaruSerchTree() { 
- if (root!=nullptr) { 
- root->destroy(root); 
- } 
-}
-template <class Z> 
-void BinarySerchTree<Z>::der::destroy(der* root) { 
-
- if (root->l) 
- { 
- destroy(root->l); 
- } 
- if (root->r != 0) 
- { 
- destroy(root->r); 
- } 
- delete root; 
- root = nullptr; 
-}
-
 template <class Z>
 bool BinarySearchTree<Z>::add(Z x){
 	if (root != nullptr) if (search(x)) throw Uzhe_est();
