@@ -86,56 +86,6 @@ private:
 
 
 
-/*#define TAHK double
 
-int main(){
-	BinarySearchTree<TAHK> tree{ 7, 5, 9, 3, 6, 8, 10 }; 
-	int J;
-	cout << "add-1, search-2, read_f-3, spis_inic-4, del-6, fr_pr_c-7, fr_r_f-8, fr_pr_f-9 exit-0\n";
-	do{
-		cout << "J="; cin >> J;
-		if (J == 1){
-			TAHK x;
-			cout << "x="; cin >> x;
-			try{ if (tree.add(x))cout << "done\n"; }
-			catch (Uzhe_est &e){ cout << e.what() << endl; }
-		}
-		if (J == 2){
-			TAHK x;
-			cout << "x="; cin >> x;
-			try{ if (tree.search(x)) cout << "founded\n"; else cout << "not founded\n"; }
-			catch (Pustoe_derevo &e) { cout << e.what() << endl; } 
-		}
-		if (J == 6){
-			int x;
-			cout << "x="; cin >> x;
-			try{ tree.del(x); }
-			catch (Pustoe_derevo &e) { cout << e.what() << endl; }
-			catch (Element_not_found &e){ cout << e.what() << endl; }
-			catch (Tree_Was_Deleted &e) { cout << e.what() << endl; tree.sozdaem_derevo_snova(); }
-		}
-		if (J == 7){
-			try{ cout << tree; cout << endl; }
-			catch (Pustoe_derevo &e) { cout << e.what() << endl; }
-		}
-		if (J == 8){
-			char a[20];
-			cout << "name of file: "; cin >> a;	
-			ifstream fin(a);
-			try{ fin >> tree; }
-			catch (File_Not_Open &e) { cout << e.what() << endl; }
-			fin.close();
-		}
-		if (J == 9){
-			char a[20];
-			cout << "name of file: "; cin >> a;
-			ofstream fout(a, ios::app);
-			try{ fout << tree; fout << -1; }
-			catch (Pustoe_derevo &e) { cout << e.what() << endl; }
-			fout.close();
-		}
-	} while (J);
-	system("pause");
-}*/
 #endif
 
