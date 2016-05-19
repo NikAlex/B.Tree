@@ -91,6 +91,30 @@ REQUIRE(!tree.Search(4.13));
 REQUIRE(!tree.Search(2.34));
 }
 
+SCENARIO("Read_int", "[read_i]") {
+	BST<int> tree; ifstream fin("read.txt");
+	fin >> tree;
+	fin.close();
+	REQUIRE(tree.search(7));
+        REQUIRE(tree.search(9));
+        REQUIRE(tree.search(5));
+        REQUIRE(tree.search(1));
+        REQUIRE(tree.search(3));
+}
+
+SCENARIO("Read_double", "[read_d]") {
+	BST<double> tree; ifstream fin("read_double.txt");
+	fin >> tree;
+	fin.close();
+	REQUIRE(tree.search(12.74));
+        REQUIRE(tree.search(15.62));
+        REQUIRE(tree.search(7.62));
+        REQUIRE(tree.search(3.14));
+        REQUIRE(tree.search(8.34));
+        REQUIRE(tree.search(25.15));
+        REQUIRE(tree.search(17.16));
+}
+
 
 SCENARIO("Print_file_int","[print_file_i]"){
 Tree<int> tree, tree_2; ofstream fout("print.txt", ios::app);
