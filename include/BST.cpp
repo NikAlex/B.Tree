@@ -16,7 +16,7 @@ size_t BST<T>::Root::sizeRoot() {
 template <class T>
 BST<T>::Root::Root(T x) : D(x), l(nullptr), r(nullptr),size_(1) {}
 template <class T>
-BST<T>::Tree(const std::initializer_list<T> & ilist) {
+BST<T>::BST(const std::initializer_list<T> & ilist) {
 
 	for (T element : ilist) {
 		Insert(element);
@@ -127,7 +127,7 @@ bool BST<T>::Root::print_file(ofstream &fout) {
 	return false;
 }
 template <class T>
-bool Tree<T>::Insert(T x) {
+bool BST<T>::Insert(T x) {
 	if (root != nullptr) if (Search(x)) throw Exist();
 	if (root == nullptr) { root = new Root(x); return true; }
 	else { root->Insert(x); return true; }
@@ -155,7 +155,7 @@ bool BST<T>::del(T x) {
 }
 
 template <class T>
-ostream & operator <<(ostream & out, Tree<T> & tree) {
+ostream & operator <<(ostream & out, BST<T> & tree) {
 	if (tree.root->print_console()) return out;
 	else throw Empty();
 }
@@ -170,7 +170,7 @@ ifstream& operator >>(ifstream & fin, BST<T> & tree) {
 	return fin;
 }
 template <class T>
-ofstream & operator <<(ofstream & fout, Tree<T> & tree) {
+ofstream & operator <<(ofstream & fout, BST<T> & tree) {
 	if (tree.root->print_file(fout)) return fout; else throw Empty();
 }
 
