@@ -196,8 +196,6 @@ istream & operator >> (istream & in, BST<T> & tree) {
 	return in;
 
 }
-/////////////////////////////////////////////////////////////////////////////
-
 
 
 template <class T>
