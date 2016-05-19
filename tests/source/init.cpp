@@ -227,14 +227,6 @@ catch(Element_not_found &){O++;}
 REQUIRE(O==1);
 }
 
-SCENARIO("Iscl_del3", "[del3]"){
-BinarySearchTree<int> tree; int O=0;
-tree.add(1);
-try{tree.del(1);}
-catch(Tree_Was_Deleted &){O++;}
-REQUIRE(O==1);
-}
-
 SCENARIO("Del", "[del]"){
 BinarySearchTree<int> tree; int O=0;
 tree.add(7);
