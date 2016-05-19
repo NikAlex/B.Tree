@@ -23,8 +23,8 @@ void BinarySearchTree<Z>::der::TFREE(){
 	{
 		r->TFREE();	
 	}
-	delete root;
-	root = nullptr;
+	delete this;
+//	root = nullptr;
 
 	
 }
