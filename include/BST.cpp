@@ -15,11 +15,11 @@ BinarySearchTree<Z>::der::der(Z x) : D(x), l(nullptr), r(nullptr){}
 template <class Z>
 void BinarySearchTree<Z>::der::TFREE(){
 	
-	if (root->l)
+	if (l)
 	{
 		l->TFREE();
 	}
-	if (root->r != 0)
+	if (r)
 	{
 		r->TFREE();	
 	}
