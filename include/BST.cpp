@@ -1,20 +1,27 @@
 #include "BST.h" 
 
-template <class T>
-size_t Tree<T>::size() {
-	if (root) {
-		root->sizeRoot();
+	
+	void BinarySearchTree<Z>::der::do_free(der* root){
+	if (root->l)
+	{
+		do_free(root->l);
 	}
-	else return 0;
+	if (root->r != 0)
+	{
+		do_free(root->r);
+	}
+	delete root;
+	root = nullptr;
 }
-template <class T>
-size_t Tree<T>::Root::sizeRoot() {
-	return size_;
+
+	
+	
+	
 }
 
 
 template <class T>
-Tree<T>::Root::Root(T x) : D(x), l(nullptr), r(nullptr),size_(1) {}
+Tree<T>::Root::Root(T x) : D(x), l(nullptr), r(nullptr) {}
 template <class T>
 Tree<T>::Tree(const std::initializer_list<T> & ilist) {
 
@@ -54,30 +61,30 @@ template <class T>
 void Tree<T>::Root::del(T x) {
 	if ((x == D) && (!l)) {
 		D = r->D;
-		if (r->l) l = r->l; else { delete[] l; l = nullptr; --size_; }
-		if (r->r) r = r->r; else { delete[] r; r = nullptr; --size_; }
+		if (r->l) l = r->l; else { delete[] l; l = nullptr;}
+		if (r->r) r = r->r; else { delete[] r; r = nullptr;}
 		return;
 	}
 	if ((x == D) && (!r)) {
 		D = l->D;
-		if (l->r) r = l->r; else { delete[] r; r = nullptr; --size_; }
-		if (l->l) l = l->l; else { delete[] l; l = nullptr; --size_; }
+		if (l->r) r = l->r; else { delete[] r; r = nullptr;}
+		if (l->l) l = l->l; else { delete[] l; l = nullptr;}
 		return;
 	}
 	if (x < D) {
-		if ((l->D == x) && (!(l->r)) && (!(l->l))) { delete[] l; l = nullptr; return; --size_; }
-		if ((l->D == x) && (l->l) && (l->r)) { l->D = find_min(l->r); if (l->r->D != find_min(l->r)) l->r->del(find_min(l->r)); else { delete[] l->r; l->r = nullptr; --size_; } return; }
+		if ((l->D == x) && (!(l->r)) && (!(l->l))) { delete[] l; l = nullptr; return;}
+		if ((l->D == x) && (l->l) && (l->r)) { l->D = find_min(l->r); if (l->r->D != find_min(l->r)) l->r->del(find_min(l->r)); else { delete[] l->r; l->r = nullptr;} return; }
 		else; l->del(x);
 
 		return;
 	}
 	if (x > D) {
-		if ((r->D == x) && (!(r->r)) && (!(r->l))) { delete[] r; r = nullptr; return; --size_; }
-		if ((r->D == x) && (r->l) && (r->r)) { r->D = find_min(r->r); if (r->r->D != find_min(r->r)) r->r->del(find_min(r->r)); else { delete[] r->r; r->r = nullptr; --size_; } return; }
+		if ((r->D == x) && (!(r->r)) && (!(r->l))) { delete[] r; r = nullptr; return;}
+		if ((r->D == x) && (r->l) && (r->r)) { r->D = find_min(r->r); if (r->r->D != find_min(r->r)) r->r->del(find_min(r->r)); else { delete[] r->r; r->r = nullptr;} return; }
 		else r->del(x);
 		return;
 	}
-	if ((x == D) && (l) && (r)) { D = find_min(r); if (r->D != find_min(r)) r->del(find_min(r)); else { delete[]r; r = nullptr; --size_; } return; }
+	if ((x == D) && (l) && (r)) { D = find_min(r); if (r->D != find_min(r)) r->del(find_min(r)); else { delete[]r; r = nullptr;} return; }
 	
 }
 
@@ -86,12 +93,12 @@ void Tree<T>::Root::Insert(T x) {
 	if (x < D) {
 		if (l != nullptr) l->Insert(x);
 		if (l == nullptr) l = new Root(x);
-		++size_;
+		
 	}
 	if (x>D) {
 		if (r != nullptr) r->Insert(x);
 		if (r == nullptr) r = new Root(x);
-		++size_;
+	
 	}
 }
 template <class T>
@@ -142,12 +149,7 @@ template <class T>
 bool Tree<T>::del(T x) {
 	if (root == nullptr) throw Empty();
 	if (!this->Search(x)) {return false;}
-	if (this->size()==1) {
-		root = nullptr;
-		delete root;
-	root = nullptr;
-		
-	}
+	
 	else {
 		root->del(x);
 	}
@@ -175,28 +177,17 @@ ofstream & operator <<(ofstream & fout, Tree<T> & tree) {
 }
 
 template <class T>
-istream & operator >> (istream & in, Tree<T> & tree) {
-	size_t size;
-	if (in >> size) {
-		for (int i = 0; i < size; ++i) {
-			T temp;
-			if (in >> temp) {
-				tree.Insert(temp);
-			}
-			else {
-				throw
-					Error_stream();
-			}
+bool Tree<T>::Root::print_file(ofstream &fout){
+	if (this != nullptr){
+		if (fout.is_open()){
+			if (l != nullptr) l->print_file(fout);
+			fout << D << " ";
+			if (r != nullptr) r->print_file(fout);
 		}
+		return true;
 	}
-	else {
-		throw Error_stream();
-	}
+	return false;
 
-	return in;
-
-}
-/////////////////////////////////////////////////////////////////////////////
 
 
 
