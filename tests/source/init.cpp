@@ -210,7 +210,7 @@ tree.Insert(3);
 tree.Insert(5);
 tree.Insert(8);
 tree.Insert(11);
-//Удаляем корнень
+
 REQUIRE(tree.del(1));
 REQUIRE(!tree.Search(1));
 REQUIRE(tree.Search(4));
@@ -219,7 +219,6 @@ REQUIRE(tree.Search(3));
 REQUIRE(tree.Search(5));
 REQUIRE(tree.Search(8));
 REQUIRE(tree.Search(11));
-//Удаляем элемент с 2мя поддеревьями
 REQUIRE(tree.del(4));
 REQUIRE(!tree.Search(1));
 REQUIRE(!tree.Search(4));
@@ -228,7 +227,6 @@ REQUIRE(tree.Search(3));
 REQUIRE(tree.Search(5));
 REQUIRE(tree.Search(8));
 REQUIRE(tree.Search(11));
-//Удаляем элемент с 1 поддеревом
 REQUIRE(tree.del(5));
 REQUIRE(!tree.Search(1));
 REQUIRE(!tree.Search(4));
@@ -237,7 +235,6 @@ REQUIRE(tree.Search(3));
 REQUIRE(!tree.Search(5));
 REQUIRE(tree.Search(8));
 REQUIRE(tree.Search(11));
-//Удаляем лист
 REQUIRE(tree.del(3));
 REQUIRE(!tree.Search(1));
 REQUIRE(!tree.Search(4));
@@ -246,7 +243,6 @@ REQUIRE(!tree.Search(3));
 REQUIRE(!tree.Search(5));
 REQUIRE(tree.Search(8));
 REQUIRE(tree.Search(11));
-//Удаляем элемент с 1 поддеревом
 REQUIRE(tree.del(10));
 REQUIRE(!tree.Search(1));
 REQUIRE(!tree.Search(4));
@@ -255,7 +251,6 @@ REQUIRE(!tree.Search(3));
 REQUIRE(!tree.Search(5));
 REQUIRE(tree.Search(8));
 REQUIRE(tree.Search(11));
-//Удаляем лист
 REQUIRE(tree.del(11));
 REQUIRE(!tree.Search(1));
 REQUIRE(!tree.Search(4));
@@ -301,135 +296,35 @@ SCENARIO("BST delete root without children", "[delete]") {
 	REQUIRE( tree.del(8) );
 }
 
-//                +----+                                              +----+
-//                |-08-|                                              | 04 |
-//                +----+                                              +----+
-//                  /                                                   /
-//                 /                                                   /
-//           +----+                                              +----+
-//           | 04 |                                              | 03 |
-//           +----+                                              +----+
-//             /
-//            /
-//      +----+                              08
-//      | 03 |                             ---->
-//      +----+
+
 SCENARIO("BST delete root with one child", "[delete]") {
 	BST<int> tree  {8, 4, 3};
 	REQUIRE( tree.del(8) );
 	REQUIRE( tree == Tree<int>({4, 3}) );
 }
 
-//                +----+                                              +----+
-//                |-08-|                                              | 09 |
-//                +----+                                              +----+
-//                  /\                                                  /\
-//                 /  \                                                /  \
-//           +----+    +----+                                    +----+    +----+
-//           | 04 |    | 10 |                                    | 04 |    | 10 |
-//           +----+    +----+                                    +----+    +----+
-//             /         /\                                        /          \
-//            /         /  \                                      /            \
-//      +----+    +----+    +----+          08              +----+              +----+
-//      | 03 |    | 09 |    | 13 |         ---->            | 03 |              | 13 |
-//      +----+    +----+    +----+                          +----+              +----+
-//                            /                                                   /
-//                           /                                                   /
-//                     +----+                                              +----+
-//                     | 11 |                                              | 11 |
-//                     +----+                                              +----+
-//                        \                                                   \
-//                         \                                                   \
-//                          +----+                                              +----+
-//                          | 12 |                                              | 12 |
-//                          +----+                                              +----+
+
 SCENARIO("BST delete root with children", "[delete]") {
 	BST<int> tree {8, 4, 3, 10, 9, 13, 11, 12};
 	REQUIRE( tree.del(8) );
 	REQUIRE( tree == Tree<int>({9, 4, 3, 10, 13, 11, 12}) );
 }
 
-//                +----+                                              +----+
-//                | 08 |                                              | 08 |
-//                +----+                                              +----+
-//                  /\                                                  /\
-//                 /  \                                                /  \
-//           +----+    +----+                                    +----+    +----+
-//           | 04 |    | 10 |                                    | 04 |    | 10 |
-//           +----+    +----+                                    +----+    +----+
-//             /         /\                                                  /\
-//            /         /  \                                                /  \
-//      +----+    +----+    +----+          03                        +----+    +----+
-//      |-03-|    | 09 |    | 13 |         ---->                      | 09 |    | 13 |
-//      +----+    +----+    +----+                                    +----+    +----+
-//                            /                                                   /
-//                           /                                                   /
-//                     +----+                                              +----+
-//                     | 11 |                                              | 11 |
-//                     +----+                                              +----+
-//                        \                                                   \
-//                         \                                                   \
-//                          +----+                                              +----+
-//                          | 12 |                                              | 12 |
-//                          +----+                                              +----+
+
 SCENARIO("BST delete non root without children", "[delete]") {
 	BST<int> tree  {8, 4, 3, 10, 9, 13, 11, 12};
 	REQUIRE( tree.del(3) );
 	REQUIRE( tree == Tree<int>({8, 4, 10, 9, 13, 11, 12}) );
 }
 
-//                +----+                                              +----+
-//                | 08 |                                              | 08 |
-//                +----+                                              +----+
-//                  /\                                                  /\
-//                 /  \                                                /  \
-//           +----+    +----+                                    +----+    +----+
-//           | 04 |    | 10 |                                    | 04 |    | 10 |
-//           +----+    +----+                                    +----+    +----+
-//             /         /\                                        /         /\
-//            /         /  \                                      /         /  \
-//      +----+    +----+    +----+          11              +----+    +----+    +----+
-//      | 03 |    | 09 |    | 13 |         ---->            | 03 |    | 09 |    | 13 |
-//      +----+    +----+    +----+                          +----+    +----+    +----+
-//                            /                                                   /
-//                           /                                                   /
-//                     +----+                                              +----+
-//                     |-11-|                                              | 12 |
-//                     +----+                                              +----+
-//                        \
-//                         \
-//                          +----+
-//                          | 12 |
-//                          +----+
+
 SCENARIO("BST delete non root with one child", "[delete]") {
 	BST<int> tree  {8, 4, 3, 10, 9, 13, 11, 12};
 	REQUIRE( tree.del(11) );
 	REQUIRE( tree == Tree<int>({8, 4, 3, 10, 9, 13, 12}) );
 }
 
-//                +----+                                              +----+
-//                | 08 |                                              | 08 |
-//                +----+                                              +----+
-//                  /\                                                  /\
-//                 /  \                                                /  \
-//           +----+    +----+                                    +----+    +----+
-//           | 04 |    |-10-|                                    | 04 |    | 11 |
-//           +----+    +----+                                    +----+    +----+
-//             /         /\                                        /         /\
-//            /         /  \                                      /         /  \
-//      +----+    +----+    +----+          10              +----+    +----+    +----+
-//      | 03 |    | 09 |    | 13 |         ---->            | 03 |    | 09 |    | 13 |
-//      +----+    +----+    +----+                          +----+    +----+    +----+
-//                            /                                                   /
-//                           /                                                   /
-//                     +----+                                              +----+
-//                     | 11 |                                              | 12 |
-//                     +----+                                              +----+
-//                        \
-//                         \
-//                          +----+
-//                          | 12 |
-//                          +----+
+
 SCENARIO("BST delete non root with children", "[delete]") {
 	BST<int> tree = {8, 4, 3, 10, 9, 13, 11, 12};
 	REQUIRE( tree.del(10) );
