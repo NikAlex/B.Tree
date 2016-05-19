@@ -102,10 +102,10 @@ public:
 	void del(T el);
 	T find_min(Root* el);
 	T get_data() { return D; };
-
-private:
 	T D;
 	Root *l;
 	Root *r;
+private:
+
 };
 
