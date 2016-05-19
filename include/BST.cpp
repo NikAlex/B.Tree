@@ -124,6 +124,28 @@ template <class Z>
 BinarySearchTree<Z>::~BinarySearchTree() {
 	if(root) {root->TFREE(); delete root;}
 }
+
+template <class Z> 
+BinarySearchTree<Z>::~BinaruSerchTree() { 
+ if (root!=nullptr) { 
+ root->destroy(root); 
+ } 
+}
+template <class Z> 
+void BinarySerchTree<Z>::der::destroy(der* root) { 
+
+ if (root->l) 
+ { 
+ destroy(root->l); 
+ } 
+ if (root->r != 0) 
+ { 
+ destroy(root->r); 
+ } 
+ delete root; 
+ root = nullptr; 
+}
+
 template <class Z>
 bool BinarySearchTree<Z>::add(Z x){
 	if (root != nullptr) if (search(x)) throw Uzhe_est();
