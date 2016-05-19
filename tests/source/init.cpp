@@ -103,7 +103,7 @@ REQUIRE(tree.Search(3));
 }
 
 SCENARIO("Read_double","[read_d]"){
-Tree<double> tree; ifstream fin("read_doubleb.txt");
+Tree<double> tree; ifstream fin("read_double.txt");
 fin>>tree;
 fin.close();
 REQUIRE(tree.Search(12.74));
