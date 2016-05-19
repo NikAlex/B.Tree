@@ -5,7 +5,7 @@ using namespace std;
 
 template <class T>
 class Tree;
-template <class T>e
+template <class T>
 ostream & operator<<(ostream & out, Tree<T> &tree);
 
 template <class T>
@@ -63,9 +63,9 @@ public:
 	bool operator == (const Tree<T> & tree);
 	auto begin() const->iterator;
 	auto end() const->iterator;
-	bool Insert(T x);// Добавление элемента 
-	bool Search(T x);// Поиск элемента 
-	bool del(T x); //удаление узла дерева 
+	bool Insert(T x);
+	bool Search(T x);
+	bool del(T x); 
 	size_t size();
 	friend ostream & operator<< <>(ostream &out, Tree<T> &tree);
 	friend ofstream & operator<< <>(ofstream &fout, Tree<T> &tree);
@@ -95,6 +95,8 @@ public:
 	void destroy(Root* root);
 	void Insert(T x);
 	bool Search(T x);
+	size_t size_;
+	size_t sizeRoot();
 	bool print_console();
 	bool print_file(ofstream &fout);
 	void del(T el);
@@ -104,6 +106,6 @@ public:
 	Root *l;
 	Root *r;
 private:
-
+	
 };
 
