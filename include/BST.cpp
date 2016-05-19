@@ -13,15 +13,15 @@ Tree_Was_Deleted::Tree_Was_Deleted() : Iscluchenia("ERROR: derevo udaleno!") {}
 template <class Z>
 BinarySearchTree<Z>::der::der(Z x) : D(x), l(nullptr), r(nullptr){}
 template <class Z>
-void BinarySearchTree<Z>::der::TFREE(der* root){
+void BinarySearchTree<Z>::der::TFREE(){
 	
 	if (root->l)
 	{
-		destroy(root->l);
+		l->TFREE();
 	}
 	if (root->r != 0)
 	{
-		destroy(root->r);
+		r->TFREE();	
 	}
 	delete root;
 	root = nullptr;
@@ -122,7 +122,7 @@ BinarySearchTree<Z>::BinarySearchTree(initializer_list<Z> L){
 }
 template <class Z>
 BinarySearchTree<Z>::~BinarySearchTree() {
-	if(root) {root->TFREE(root); delete root;}
+	if(root) {root->TFREE(); delete root;}
 }
 template <class Z>
 bool BinarySearchTree<Z>::add(Z x){
