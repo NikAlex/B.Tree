@@ -77,7 +77,7 @@ public:
 	bool print_file(ofstream &fout);
 	void del(Z x);
 	Z min(der* G);
-	void TFREE(der* Der);
+	void TFREE();
 private:
 	Z D;
 	der *l;
