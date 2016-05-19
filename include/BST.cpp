@@ -1,4 +1,4 @@
-#include "BST.h"
+#include "binarysearchtree.h"
 #include <iostream>
 #include <fstream>
 using namespace std;
@@ -51,7 +51,7 @@ Z BinarySearchTree<Z>::der::min(der* G){
 }
 template <class Z>
 void BinarySearchTree<Z>::der::del(Z x){
-if ((x == D) && (!l) && (!r)) { delete this; throw Tree_Was_Deleted(); }
+	if ((x == D) && (!l) && (!r)) { delete this; throw Tree_Was_Deleted(); }
 	if ((x == D) && (!l)) {
 		D = r->D;
 		if (r->l) l = r->l; else { delete l; l = nullptr; }
@@ -77,8 +77,6 @@ if ((x == D) && (!l) && (!r)) { delete this; throw Tree_Was_Deleted(); }
 		return;
 	}
 	if ((x == D) && (l) && (r)) { D = min(r); if (r->D != min(r)) r->del(min(r)); else { delete r; r = nullptr; } return; }
-
-
 }
 
 
