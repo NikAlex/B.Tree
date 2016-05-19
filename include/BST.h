@@ -60,7 +60,7 @@ public:
 	BST() :root(nullptr) {};
 	BST(const initializer_list<T> & ilist);
 	~BST();
-	bool operator == (const Tree<T> & tree);
+	bool operator == (const BST<T> & tree);
 	auto begin() const->iterator;
 	auto end() const->iterator;
 	bool Insert(T x);// Добавление элемента 
