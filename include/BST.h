@@ -63,9 +63,9 @@ public:
 	bool operator == (const Tree<T> & tree);
 	auto begin() const->iterator;
 	auto end() const->iterator;
-	bool Insert(T x);
-	bool Search(T x);
-	bool del(T x); 
+	bool Insert(T x);// Добавление элемента 
+	bool Search(T x);// Поиск элемента 
+	bool del(T x); //удаление узла дерева 
 	size_t size();
 	friend ostream & operator<< <>(ostream &out, Tree<T> &tree);
 	friend ofstream & operator<< <>(ofstream &fout, Tree<T> &tree);
