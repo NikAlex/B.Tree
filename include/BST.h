@@ -4,18 +4,18 @@
 using namespace std;
 
 template <class T>
-class Tree;
+class BST;
 template <class T>
-ostream & operator<<(ostream & out, Tree<T> &tree);
+ostream & operator<<(ostream & out, BST<T> &tree);
 
 template <class T>
-ofstream & operator<<(ofstream & fout, Tree<T> &tree);
+ofstream & operator<<(ofstream & fout, BST<T> &tree);
 
 template <class T>
-ifstream & operator >> (ifstream & fin, Tree<T> &tree);
+ifstream & operator >> (ifstream & fin, BST<T> &tree);
 
 template <class T>
-istream & operator >> (istream & in, Tree<T> &tree);
+istream & operator >> (istream & in, BST<T> &tree);
 //Класс исключений 
 class Exceptions {
 	char* err;
@@ -52,14 +52,14 @@ Empty::Empty() : Exceptions("ERROR: The Binary Tree is empty!") {}
 Deleted::Deleted() : Exceptions("ERROR: It was deleted before") {}
 Error_stream::Error_stream() : Exceptions("ERROR: Stream error") {}
 template <class T>
-class Tree {
+class BST {
 public:
 	class NodeIterator;
 	using iterator = NodeIterator;
 
-	Tree() :root(nullptr) {};
-	Tree(const initializer_list<T> & ilist);
-	~Tree();
+	BST() :root(nullptr) {};
+	BST(const initializer_list<T> & ilist);
+	~BST();
 	bool operator == (const Tree<T> & tree);
 	auto begin() const->iterator;
 	auto end() const->iterator;
@@ -67,10 +67,10 @@ public:
 	bool Search(T x);// Поиск элемента 
 	bool del(T x); //удаление узла дерева 
 	size_t size();
-	friend ostream & operator<< <>(ostream &out, Tree<T> &tree);
-	friend ofstream & operator<< <>(ofstream &fout, Tree<T> &tree);
-	friend ifstream & operator>> <>(ifstream &fin, Tree<T> &tree);
-	friend istream & operator >> <>(istream & in, Tree<T> &tree);
+	friend ostream & operator<< <>(ostream &out, BST<T> &tree);
+	friend ofstream & operator<< <>(ofstream &fout, BST<T> &tree);
+	friend ifstream & operator>> <>(ifstream &fin, BST<T> &tree);
+	friend istream & operator >> <>(istream & in, BST<T> &tree);
 	class Root;
 	Root* root; //корень дерева 
 
@@ -89,7 +89,7 @@ public:
 };
 
 template <class T>
-class Tree<T>::Root {
+class BST<T>::Root {
 public:
 	Root(T x);
 	void destroy(Root* root);
