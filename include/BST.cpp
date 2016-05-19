@@ -14,18 +14,19 @@ template <class Z>
 BinarySearchTree<Z>::der::der(Z x) : D(x), l(nullptr), r(nullptr){}
 template <class Z>
 void BinarySearchTree<Z>::der::do_free(){
-	f:
-	if (this){
-		if (l){
-			if ((l->l) || (l->r)) l->do_free();
-			else { delete l; l = nullptr; }
-		}
-		if (r){
-			if ((r->l) || (r->r)) r->do_free();
-			else { delete r;  r = nullptr; }
-		}
-		if (l || r) goto f;
+	
+	if (root->l)
+	{
+		destroy(root->l);
 	}
+	if (root->r != 0)
+	{
+		destroy(root->r);
+	}
+	delete root;
+	root = nullptr;
+
+	
 }
 template <class Z>
 void BinarySearchTree<Z>::der::add(Z x){
@@ -121,7 +122,7 @@ BinarySearchTree<Z>::BinarySearchTree(initializer_list<Z> L){
 }
 template <class Z>
 BinarySearchTree<Z>::~BinarySearchTree() {
-	if(root) {root->do_free(); delete root;}
+	if(root) {root->TFREE(der* root); delete root;}
 }
 template <class Z>
 bool BinarySearchTree<Z>::add(Z x){
