@@ -227,6 +227,7 @@ catch(Element_not_found &){O++;}
 REQUIRE(O==1);
 }
 
+/*
 SCENARIO("Del", "[del]"){
 BinarySearchTree<int> tree; int O=0;
 tree.add(7);
