@@ -5,7 +5,7 @@ using namespace std;
 
 template <class T>
 class Tree;
-template <class T>
+template <class T>e
 ostream & operator<<(ostream & out, Tree<T> &tree);
 
 template <class T>
@@ -95,8 +95,6 @@ public:
 	void destroy(Root* root);
 	void Insert(T x);
 	bool Search(T x);
-	size_t size_;
-	size_t sizeRoot();
 	bool print_console();
 	bool print_file(ofstream &fout);
 	void del(T el);
