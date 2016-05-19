@@ -16,7 +16,7 @@ ifstream & operator >> (ifstream & fin, BST<T> &tree);
 
 template <class T>
 istream & operator >> (istream & in, BST<T> &tree);
-//Класс исключений 
+
 class Exceptions {
 	char* err;
 public:
@@ -45,12 +45,19 @@ public:
 };
 
 Exceptions::Exceptions(char* _err) : err(_err) {}
+
 char* Exceptions::what() { return err; }
+
 Exist::Exist() : Exceptions("ERROR: It's already exist!") {}
+
 File_Not_Open::File_Not_Open() : Exceptions("ERROR: file is not open!") {}
+
 Empty::Empty() : Exceptions("ERROR: The Binary Tree is empty!") {}
+
 Deleted::Deleted() : Exceptions("ERROR: It was deleted before") {}
+
 Error_stream::Error_stream() : Exceptions("ERROR: Stream error") {}
+
 template <class T>
 class BST {
 public:
@@ -63,17 +70,16 @@ public:
 	bool operator == (const BST<T> & tree);
 	auto begin() const->iterator;
 	auto end() const->iterator;
-	bool Insert(T x);// Добавление элемента 
-	bool Search(T x);// Поиск элемента 
-	bool del(T x); //удаление узла дерева 
+	bool Insert(T x);
+	bool Search(T x);
+	bool del(T x); 
 	size_t size();
 	friend ostream & operator<< <>(ostream &out, BST<T> &tree);
 	friend ofstream & operator<< <>(ofstream &fout, BST<T> &tree);
 	friend ifstream & operator>> <>(ifstream &fin, BST<T> &tree);
 	friend istream & operator >> <>(istream & in, BST<T> &tree);
 	class Root;
-	Root* root; //корень дерева 
-
+	Root* root; 
 	static auto  fillListOfNodes(list<const Root*> & listOfNodes, const Root* root)->void;
 	class NodeIterator {
 	public:
