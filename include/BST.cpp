@@ -13,7 +13,7 @@ Tree_Was_Deleted::Tree_Was_Deleted() : Iscluchenia("ERROR: derevo udaleno!") {}
 template <class Z>
 BinarySearchTree<Z>::der::der(Z x) : D(x), l(nullptr), r(nullptr){}
 template <class Z>
-void BinarySearchTree<Z>::der::TFREE(){
+void BinarySearchTree<Z>::der::TFREE(der* root){
 	
 	if (root->l)
 	{
