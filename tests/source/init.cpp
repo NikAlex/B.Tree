@@ -91,16 +91,6 @@ REQUIRE(!tree.Search(4.13));
 REQUIRE(!tree.Search(2.34));
 }
 
-SCENARIO("Read_int","[read_i]"){
-Tree<int> tree; ifstream fin("read.txt");
-fin>>tree;
-fin.close();
-REQUIRE(tree.Search(9));
-REQUIRE(tree.Search(5));
-REQUIRE(tree.Search(1));
-REQUIRE(tree.Search(3));
-}
-
 
 SCENARIO("Print_file_int","[print_file_i]"){
 Tree<int> tree, tree_2; ofstream fout("print.txt", ios::app);
