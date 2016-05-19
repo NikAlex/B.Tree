@@ -1,4 +1,4 @@
-#include <tree.cpp>
+#include <BST.cpp>
 #include <catch.hpp>
 #include <fstream>
 #include <iostream> 
