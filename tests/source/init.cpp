@@ -95,25 +95,12 @@ SCENARIO("Read_int","[read_i]"){
 Tree<int> tree; ifstream fin("read.txt");
 fin>>tree;
 fin.close();
-REQUIRE(tree.Search(7));
 REQUIRE(tree.Search(9));
 REQUIRE(tree.Search(5));
 REQUIRE(tree.Search(1));
 REQUIRE(tree.Search(3));
 }
 
-SCENARIO("Read_double","[read_d]"){
-Tree<double> tree; ifstream fin("read_db.txt");
-fin>>tree;
-fin.close();
-REQUIRE(tree.Search(12.74));
-REQUIRE(tree.Search(15.62));
-REQUIRE(tree.Search(7.62));
-REQUIRE(tree.Search(3.14));
-REQUIRE(tree.Search(8.34));
-REQUIRE(tree.Search(25.15));
-REQUIRE(tree.Search(17.16));
-}
 
 SCENARIO("Print_file_int","[print_file_i]"){
 Tree<int> tree, tree_2; ofstream fout("print.txt", ios::app);
