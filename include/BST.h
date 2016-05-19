@@ -1,141 +1,111 @@
-#ifndef binarysearchtree_h
-#define binarysearchtree_h
-#pragma once
-#include <iostream>
-#include <fstream>
-#include <initializer_list>
+#include <iostream> 
+#include <fstream> 
+#include <list> 
 using namespace std;
 
-template <class Z>
-class BinarySearchTree;
+template <class T>
+class Tree;
+template <class T>
+ostream & operator<<(ostream & out, Tree<T> &tree);
 
-template <class Z>
-ostream & operator<<(ostream & out, BinarySearchTree<Z> &tree);
+template <class T>
+ofstream & operator<<(ofstream & fout, Tree<T> &tree);
 
-template <class Z>
-ofstream & operator<<(ofstream & fout, BinarySearchTree<Z> &tree);
+template <class T>
+ifstream & operator >> (ifstream & fin, Tree<T> &tree);
 
-template <class Z>
-ifstream & operator >> (ifstream & fin, BinarySearchTree<Z> &tree);
-class Iscluchenia {
+template <class T>
+istream & operator >> (istream & in, Tree<T> &tree);
+//Класс исключений 
+class Exceptions {
 	char* err;
 public:
-	Iscluchenia(char* _err);
+	Exceptions(char* _err);
 	char* what();
 };
-
-class Uzhe_est : public Iscluchenia{
-public:
-	Uzhe_est();
-};
-
-class File_Not_Open : public Iscluchenia{
+class File_Not_Open : public Exceptions {
 public:
 	File_Not_Open();
 };
-
-class Pustoe_derevo : public Iscluchenia{
+class Empty : public Exceptions {
 public:
-	Pustoe_derevo();
+	Empty();
+};
+class Exist : public Exceptions {
+public:
+	Exist();
+};
+class Deleted : public Exceptions {
+public:
+	Deleted();
+};
+class Error_stream : public Exceptions {
+public:
+	Error_stream();
 };
 
-class Element_not_found : public Iscluchenia{  
+Exceptions::Exceptions(char* _err) : err(_err) {}
+char* Exceptions::what() { return err; }
+Exist::Exist() : Exceptions("ERROR: It's already exist!") {}
+File_Not_Open::File_Not_Open() : Exceptions("ERROR: file is not open!") {}
+Empty::Empty() : Exceptions("ERROR: The Binary Tree is empty!") {}
+Deleted::Deleted() : Exceptions("ERROR: It was deleted before") {}
+Error_stream::Error_stream() : Exceptions("ERROR: Stream error") {}
+template <class T>
+class Tree {
 public:
-	Element_not_found();
+	class NodeIterator;
+	using iterator = NodeIterator;
+
+	Tree() :root(nullptr) {};
+	Tree(const initializer_list<T> & ilist);
+	~Tree();
+	bool operator == (const Tree<T> & tree);
+	auto begin() const->iterator;
+	auto end() const->iterator;
+	bool Insert(T x);// Добавление элемента 
+	bool Search(T x);// Поиск элемента 
+	bool del(T x); //удаление узла дерева 
+	size_t size();
+	friend ostream & operator<< <>(ostream &out, Tree<T> &tree);
+	friend ofstream & operator<< <>(ofstream &fout, Tree<T> &tree);
+	friend ifstream & operator>> <>(ifstream &fin, Tree<T> &tree);
+	friend istream & operator >> <>(istream & in, Tree<T> &tree);
+	class Root;
+	Root* root; //корень дерева 
+
+	static auto  fillListOfNodes(list<const Root*> & listOfNodes, const Root* root)->void;
+	class NodeIterator {
+	public:
+		NodeIterator() = default;
+		NodeIterator(const Root* root);
+		auto operator == (const NodeIterator & _iterator) -> bool;
+		auto operator != (const NodeIterator & _iterator) -> bool;
+		auto operator ++()->NodeIterator;
+		auto operator *() const -> const T &;
+		list<const Root*> history_;
+		
+	};
 };
 
-class Tree_Was_Deleted : public Iscluchenia{  
+template <class T>
+class Tree<T>::Root {
 public:
-	Tree_Was_Deleted();
-};
-
-template <class Z>
-class BinarySearchTree{
-public:
-	BinarySearchTree();
-	BinarySearchTree(initializer_list<Z> L);
-	~BinarySearchTree();
-	bool add(Z x);
-	bool search(Z x);
-	bool del(Z x);
-	void sozdaem_derevo_snova();
-	friend ostream & operator<< <>(ostream &out, BinarySearchTree<Z> &tree);
-	friend ofstream & operator<< <>(ofstream &fout, BinarySearchTree<Z> &tree);		
-	friend ifstream & operator>> <>(ifstream &fin, BinarySearchTree<Z> &tree);
-private:
-	class der; 
-	der* root;
-};
-
-template <class Z>
-class BinarySearchTree<Z>::der{
-public:
-	der(Z x);
-	void add(Z x);
-	bool search(Z x);
+	Root(T x);
+	void destroy(Root* root);
+	void Insert(T x);
+	bool Search(T x);
+	size_t size_;
+	size_t sizeRoot();
 	bool print_console();
 	bool print_file(ofstream &fout);
-	void del(Z x);
-	Z min(der* G);
-	void do_free(der* root); 
+	void del(T el);
+	T find_min(Root* el);
+	T get_data() { return D; };
+	T D;
+	Root *l;
+	Root *r;
 private:
-	Z D;
-	der *l;
-	der *r;
+	
 };
-
-
-
-/*#define TAHK double
-
-int main(){
-	BinarySearchTree<TAHK> tree{ 7, 5, 9, 3, 6, 8, 10 }; 
-	int J;
-	cout << "add-1, search-2, read_f-3, spis_inic-4, del-6, fr_pr_c-7, fr_r_f-8, fr_pr_f-9 exit-0\n";
-	do{
-		cout << "J="; cin >> J;
-		if (J == 1){
-			TAHK x;
-			cout << "x="; cin >> x;
-			try{ if (tree.add(x))cout << "done\n"; }
-			catch (Uzhe_est &e){ cout << e.what() << endl; }
-		}
-		if (J == 2){
-			TAHK x;
-			cout << "x="; cin >> x;
-			try{ if (tree.search(x)) cout << "founded\n"; else cout << "not founded\n"; }
-			catch (Pustoe_derevo &e) { cout << e.what() << endl; } 
-		}
-		if (J == 6){
-			int x;
-			cout << "x="; cin >> x;
-			try{ tree.del(x); }
-			catch (Pustoe_derevo &e) { cout << e.what() << endl; }
-			catch (Element_not_found &e){ cout << e.what() << endl; }
-			catch (Tree_Was_Deleted &e) { cout << e.what() << endl; tree.sozdaem_derevo_snova(); }
-		}
-		if (J == 7){
-			try{ cout << tree; cout << endl; }
-			catch (Pustoe_derevo &e) { cout << e.what() << endl; }
-		}
-		if (J == 8){
-			char a[20];
-			cout << "name of file: "; cin >> a;	
-			ifstream fin(a);
-			try{ fin >> tree; }
-			catch (File_Not_Open &e) { cout << e.what() << endl; }
-			fin.close();
-		}
-		if (J == 9){
-			char a[20];
-			cout << "name of file: "; cin >> a;
-			ofstream fout(a, ios::app);
-			try{ fout << tree; fout << -1; }
-			catch (Pustoe_derevo &e) { cout << e.what() << endl; }
-			fout.close();
-		}
-	} while (J);
-	system("pause");
-}*/
-#endif
 
