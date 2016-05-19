@@ -299,34 +299,34 @@ SCENARIO("BST delete root without children", "[delete]") {
 SCENARIO("BST delete root with one child", "[delete]") {
 	BST<int> tree  {8, 4, 3};
 	REQUIRE( tree.del(8) );
-	REQUIRE( tree == Tree<int>({4, 3}) );
+	REQUIRE( tree == BST<int>({4, 3}) );
 }
 
 
 SCENARIO("BST delete root with children", "[delete]") {
 	BST<int> tree {8, 4, 3, 10, 9, 13, 11, 12};
 	REQUIRE( tree.del(8) );
-	REQUIRE( tree == Tree<int>({9, 4, 3, 10, 13, 11, 12}) );
+	REQUIRE( tree == BST<int>({9, 4, 3, 10, 13, 11, 12}) );
 }
 
 
 SCENARIO("BST delete non root without children", "[delete]") {
 	BST<int> tree  {8, 4, 3, 10, 9, 13, 11, 12};
 	REQUIRE( tree.del(3) );
-	REQUIRE( tree == Tree<int>({8, 4, 10, 9, 13, 11, 12}) );
+	REQUIRE( tree == BST<int>({8, 4, 10, 9, 13, 11, 12}) );
 }
 
 
 SCENARIO("BST delete non root with one child", "[delete]") {
 	BST<int> tree  {8, 4, 3, 10, 9, 13, 11, 12};
 	REQUIRE( tree.del(11) );
-	REQUIRE( tree == Tree<int>({8, 4, 3, 10, 9, 13, 12}) );
+	REQUIRE( tree == BST<int>({8, 4, 3, 10, 9, 13, 12}) );
 }
 
 
 SCENARIO("BST delete non root with children", "[delete]") {
 	BST<int> tree = {8, 4, 3, 10, 9, 13, 11, 12};
 	REQUIRE( tree.del(10) );
-	REQUIRE( tree == Tree<int>({8, 4, 3, 11, 9, 13, 12}) );
+	REQUIRE( tree == BST<int>({8, 4, 3, 11, 9, 13, 12}) );
 }
 
